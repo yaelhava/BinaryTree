@@ -19,8 +19,8 @@ int main() {
   threetree.insert(7);
   threetree.insert(3);
   
-  testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32).insert(5).insert(-32).insert(1).insert(14).insert(-10);
-
+testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32)
+          .insert(5).insert(-32).insert(1).insert(14).insert(-10);
 
   ariel::Tree mytree;  
 
