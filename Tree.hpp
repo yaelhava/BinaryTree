@@ -47,8 +47,8 @@ namespace ariel{
         struct node* smallOrLarge(int i, struct node* node);
         void print(struct node* node);
         struct node* deleteTree(struct node* node);
-        void remove(int i, struct node* node);
-
+        void remove(int i, struct node* node, struct node* parent);
+        bool isRight(struct node* node, struct node* parent);
         
 
         public:
