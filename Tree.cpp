@@ -44,6 +44,9 @@ void Tree::insert(int i, struct node* n){
 }
 
 int Tree::root(){
+    if(Tree::head == NULL){
+        throw runtime_error("THE TREE IS EMPTY");
+    }
    return Tree::head->node::getValue(); 
 }
 
@@ -70,7 +73,6 @@ struct node* Tree::smallOrLarge(int i, struct node* node){
     if (i < node->getValue()){
         return node->getLeft();
     }
-       // i > node->getValue())
     return node->getRight();
         
 }
@@ -144,16 +146,128 @@ void Tree::print(){
 void Tree::print(struct node* node){
     if(node != NULL){
         print(node->getLeft());
-    
-    cout << node->getValue() << " ";
-    print(node->getRight());
+        cout << node->getValue() << " ";
+        print(node->getRight());
     }
 }
 
 
+bool Tree::isRight(struct node* node, struct node* parent){
+    if(parent->getValue() > node->getValue()){
+        return false;
+    }
+    return true;
+}
+
+
  void Tree::remove(int i){
-     
+    if(!this->contains(i)){
+        throw runtime_error("DOESN'T EXIST");
+    }
+    if(Tree::head->getValue() == i){
+        remove(i, Tree::head, NULL);
+        head = NULL;
+    }
+    else{
+        struct node* first = head;
+        struct node* second = smallOrLarge(i, Tree::head);
+        while(second->getValue() != i){
+            first = second;
+            second = smallOrLarge(i, second);
+        }
+        remove(i, second, first);
+    }
  }
+    
+    void Tree::remove(int i, struct node* node, struct node* parent){
+        if(node->getLeft() == NULL && node->getRight() == NULL){
+            if(parent != NULL){
+                if(this->isRight(node, parent)){
+                    parent->setRight(NULL);
+                }
+                else{
+                    parent->setLeft(NULL);
+                }
+                node = NULL;
+            }
+        }
+        else if(node->getRight() && node->getLeft()){
+            struct node* temp = node->getRight();
+            while(temp->getLeft() != NULL){
+                temp = temp->getLeft();
+            }
+            struct node* save = temp;
+            if(temp->getRight() != NULL){
+                node->getRight()->setLeft(temp->getRight());
+                save->setRight(node->getRight());
+            }
+            
+            save->setLeft(node->getLeft());
+            if(parent != NULL){
+                if(this->isRight(node, parent)){
+                    parent->setRight(save);
+                }
+                else{
+                    parent->setLeft(save);
+                }
+                node = NULL;
+            }
+            // else{
+            //     head = node->getRight();
+            //     node = NULL;
+            // }
+
+        }
+        else if (node->getLeft() == NULL){
+            if(node->getValue() != head->getValue()){
+                if(this->isRight(node, parent)){
+                parent->setRight(node->getRight());
+            }
+            else{
+                parent->setLeft(node->getRight());
+            }
+                node = NULL;
+            }
+            else{
+                head = node->getRight();
+                node = NULL;
+            }
+        }
+        else if (node->getRight() == NULL){
+            if(node->getValue() != head->getValue()){
+                if(this->isRight(node, parent)){
+                parent->setRight(node->getLeft());
+            }
+            else{
+                parent->setLeft(node->getLeft());
+            }
+                node = NULL;
+            }
+            else{
+                head = node->getLeft();
+                node = NULL;
+            }
+        }
+    }
+
+
+
+
+
+Tree::~Tree(){
+    Tree::head = deleteTree(head);
+}
+
+
+struct node* Tree::deleteTree(struct node* node){
+    if(node != NULL){
+        deleteTree(node->getLeft());
+        deleteTree(node->getRight());
+        delete node;
+    }
+    return NULL;
+}
+
 
 
 // int main(){
@@ -164,10 +278,11 @@ void Tree::print(struct node* node){
 //     cout << "root:" << t.root() << endl;
 //     t.insert(2);
 //     t.insert(4);
+//      t.insert(10);
 //     t.insert(12);
 //     t.insert(11);
 //     t.insert(32);
-//     //t.insert(32);
+   
 //     cout << "size:" << t.size() << endl;
 //     t.insert(5).insert(6);
 //     cout << "size:" << t.size() << endl;
@@ -177,5 +292,13 @@ void Tree::print(struct node* node){
 //     cout << t.parent(32) << endl;
 //     t.print();
 //     cout << endl;
+//   //  t.print();
+//     t.remove(10);
+//     t.print();
+//     cout << endl;
+//    // cout << "2 removed" << endl;
+
+
+
 //     return 0;
 // }
