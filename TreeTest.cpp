@@ -19,8 +19,9 @@ int main() {
   threetree.insert(7);
   threetree.insert(3);
   
-testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32)
+  testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32)
           .insert(5).insert(-32).insert(1).insert(14).insert(-10);
+
 
   ariel::Tree mytree;  
 
@@ -71,7 +72,7 @@ testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32)
   .CHECK_EQUAL (threetree.parent(26), 5)
   .CHECK_OK(threetree.remove(26))
   .CHECK_EQUAL(threetree.size(), 3)
-  .CHECK_THROWS(threetree.contains(26))
+  .CHECK_EQUAL(threetree.contains(26),false)
   .CHECK_EQUAL (threetree.parent(4), 3)
   .CHECK_THROWS(threetree.left(3))
   .CHECK_EQUAL (threetree.right(3), 4)
@@ -88,12 +89,14 @@ testtree.insert(3).insert(2).insert(4).insert(12).insert(11).insert(32)
   .CHECK_THROWS(testtree.parent(3))
   .CHECK_OK(testtree.remove(5))
   .CHECK_OK(testtree.remove(12))
-  .CHECK_EQUAL(testtree.left(11), 5)
-  .CHECK_OK(testtree.remove(3))
+  .CHECK_THROWS(testtree.left(11))
+  .CHECK_OK(testtree.print())
+   .CHECK_OK(testtree.remove(3))
+  .CHECK_EQUAL(testtree.size(),9)
   .CHECK_OK(testtree.insert(17))
   .CHECK_EQUAL(testtree.left(2), -32)
   .CHECK_EQUAL(testtree.parent(1), -32)
-  .CHECK_EQUAL(testtree.contains(18), false)
+   .CHECK_EQUAL(testtree.contains(18), false)
   .CHECK_THROWS(testtree.remove(13))
   .CHECK_THROWS(testtree.left(2))
   .CHECK_THROWS(testtree.right(5))
