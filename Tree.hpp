@@ -25,6 +25,10 @@ struct node{
         return right;
     }
 
+    void setValue(int v){
+        value = v;
+    }
+
     void setLeft(struct node* temp){
         left = temp;
     }
@@ -46,10 +50,11 @@ namespace ariel{
         void insert(int i, struct node* node);
         struct node* smallOrLarge(int i, struct node* node);
         void print(struct node* node);
-        struct node* deleteTree(struct node* node);
-        void remove(int i, struct node* node, struct node* parent);
+         void deleteTree( node* nodee);
+        struct node* remove( int i ,struct node* node);
         bool isRight(struct node* node, struct node* parent);
-        
+        struct node* findMin(struct node* t);
+        struct node* maxNode(struct node *root);
 
         public:
         Tree(){ 
@@ -66,6 +71,8 @@ namespace ariel{
         int left(int i);
         int right(int i);
         void print();
+
+
 
     };
 }
