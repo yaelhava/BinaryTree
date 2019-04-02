@@ -11,6 +11,8 @@ struct node{
     public: 
     node(int v){
         value = v;
+        right = NULL;
+        left = NULL;
     }
     
     int getValue(){
