@@ -1,7 +1,7 @@
 #include <iostream>
 using namespace std;
 
-
+//this struct represents a node in binary tree
 struct node{
     private:
     int value;
@@ -43,6 +43,8 @@ struct node{
 
 namespace ariel{
 
+
+//this class represents a binary tree
     class Tree{
 
         private:
@@ -55,8 +57,7 @@ namespace ariel{
          void deleteTree( node* nodee);
         struct node* remove( int i ,struct node* node);
         bool isRight(struct node* node, struct node* parent);
-        struct node* findMin(struct node* t);
-        struct node* maxNode(struct node *root);
+        struct node* findMin(struct node* node);
 
         public:
         Tree(){ 
