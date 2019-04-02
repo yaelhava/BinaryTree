@@ -1,12 +1,14 @@
 #include "Tree.hpp"
 using namespace ariel;
 
+//returns the size of the tree
 int Tree::size()
 {
     return Tree::treeSize;
 }
 
-Tree &Tree::insert(int i)
+//add a leaf to the tree
+Tree& Tree::insert(int i)
 {
     if (head == NULL)
     {
@@ -25,6 +27,7 @@ Tree &Tree::insert(int i)
     return *this;
 }
 
+//help method for insert method
 void Tree::insert(int i, struct node *n)
 {
     if (i < n->getValue())
@@ -53,6 +56,7 @@ void Tree::insert(int i, struct node *n)
     }
 }
 
+//returns the value of the root of the tree
 int Tree::root()
 {
     if (head == NULL)
@@ -62,6 +66,8 @@ int Tree::root()
     return head->getValue();
 }
 
+
+//check if the node exsits in the tree
 bool Tree::contains(int i)
 {
     if (head == NULL)
@@ -84,6 +90,9 @@ bool Tree::contains(int i)
     return false;
 }
 
+
+//returns thr right child if the value is bigger' and the left child if the 
+//value is smaller
 struct node *Tree::smallOrLarge(int i, struct node *node)
 {
     if (i < node->getValue())
@@ -93,6 +102,8 @@ struct node *Tree::smallOrLarge(int i, struct node *node)
     return node->getRight();
 }
 
+
+//returns the parent of this node
 int Tree::parent(int i)
 {
     if (!this->contains(i))
@@ -113,11 +124,13 @@ int Tree::parent(int i)
     return first->getValue();
 }
 
+
+//returns the left child of this node
 int Tree::left(int i)
 {
     if (!this->contains(i))
     {
-        throw runtime_error("NOT EiIST");
+        throw runtime_error("NOT EXIST");
     }
     if (Tree::head->getValue() == i)
     {
@@ -139,6 +152,8 @@ int Tree::left(int i)
     return temp->getLeft()->getValue();
 }
 
+
+//returns the right child of this node
 int Tree::right(int i)
 {
     if (!this->contains(i))
@@ -165,6 +180,7 @@ int Tree::right(int i)
     return temp->getRight()->getValue();
 }
 
+//prints the tree in inorder
 void Tree::print()
 {
     if (Tree::head == NULL)
@@ -174,6 +190,8 @@ void Tree::print()
     print(Tree::head);
 }
 
+
+//help method for print method
 void Tree::print(struct node *node)
 {
     if (node != NULL)
@@ -184,6 +202,8 @@ void Tree::print(struct node *node)
     }
 }
 
+
+//check if the node is right child  or left child
 bool Tree::isRight(struct node *node, struct node *parent)
 {
     if (parent->getValue() > node->getValue())
@@ -193,55 +213,48 @@ bool Tree::isRight(struct node *node, struct node *parent)
     return true;
 }
 
-struct node *Tree::findMin(struct node *t)
-{
-    if (t == NULL)
-        return NULL;
-    else if (t->getLeft() == NULL)
-        return t;
-    else
-        return findMin(t->getLeft());
-}
 
+//delete the from the tree
 void Tree::remove(int i)
 {
     if (!this->contains(i))
     {
         throw runtime_error("DOESN'T EXIST");
     }
-    if (head->getValue() == i) // Case 1, root contain the data.
+    if(head->getValue() == i) 
     {
-        if (head->getRight() == NULL && head->getLeft() == NULL)
-        { // No children
+        if(head->getRight() == NULL && head->getLeft() == NULL)
+        {
             delete head;
             head = NULL;
         }
-        
-        else if (head->getRight() == NULL && head->getLeft() != NULL)
-        { // Left child
-            struct node *temp = head->getLeft();
+        else if(head->getLeft() != NULL && head->getRight() == NULL)
+        { 
+            node *temp = head->getLeft();
             delete head;
             head = temp;
         }
-        else if (head->getRight() != NULL && head->getLeft() == NULL)
-        { // Right child
-            struct node *temp = head->getRight();
+        else if(head->getRight() != NULL && head->getLeft() == NULL)
+        { 
+            node *temp = head->getRight();
             delete head;
             head = temp;
         }
         else
-        {                                                // Root has 2 children
-            struct node *max = maxNode(head->getLeft()); // Search on left tree max data value
-            int maxData = max->getValue();
-            remove(maxData);         // Remove the max data that we found
-            head->setValue(maxData); // Set root to be the max data
-            treeSize++;              // Just because we remove "twice"
+        {            
+            struct node* min = findMin(head->getRight());
+            int minVal = min->getValue();
+            remove(minVal);
+            treeSize++;
+            head->setValue(minVal);
         }
     }
     head = remove(i, head);
     treeSize--;
 }
 
+
+//help method for remove method
 struct node *Tree::remove(int i, struct node *t)
 {
 
@@ -272,57 +285,34 @@ struct node *Tree::remove(int i, struct node *t)
     return t;
 }
 
-struct node *Tree::maxNode(struct node *root)
+
+//find the minimum node under that node
+struct node* Tree::findMin(struct node* node)
 {
-    while (root->getRight() != NULL)
+    while (node->getLeft() != NULL)
     {
-        root = root->getRight();
+        node = node->getLeft();
     }
-    return root;
+    return node;
 }
 
-Tree::~Tree(){
+
+//destructor
+Tree::~Tree()
+{
     deleteTree(head);
 }
 
- void Tree::deleteTree(node *nodee)
+
+//help method for the destructor
+void Tree::deleteTree(node *nodee)
 {
-    if(nodee !=NULL) {
+    if (nodee != NULL)
+    {
         deleteTree(nodee->getLeft());
         deleteTree(nodee->getRight());
         delete nodee;
     }
-
 }
 
 
-// int main(){
-//     Tree t;
-//     cout << "size:" << t.size() << endl;
-//     t.insert(3);
-//     cout << "size:" << t.size() << endl;
-//     cout << "root:" << t.root() << endl;
-//     t.insert(2);
-//     t.insert(4);
-//      t.insert(10);
-//     t.insert(12);
-//     t.insert(11);
-//     t.insert(32);
-
-//     cout << "size:" << t.size() << endl;
-//     t.insert(5).insert(6);
-//     cout << "size:" << t.size() << endl;
-//     cout << t.contains(5) << endl;
-//     cout << t.left(12) << endl;
-//     cout << t.right(12) << endl;
-//     cout << t.parent(32) << endl;
-//     t.print();
-//     cout << endl;
-//   //  t.print();
-//     t.remove(3);
-//     t.print();
-//     cout << endl;
-//    // cout << "2 removed" << endl;
-
-//     return 0;
-// }
