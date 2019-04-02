@@ -24,7 +24,8 @@ int main() {
 
 
   ariel::Tree mytree;  
-
+    
+  
   badkan::TestCase tc("Binary tree");
   tc
   .CHECK_EQUAL (emptytree.size(), 0)
@@ -92,13 +93,13 @@ int main() {
   .CHECK_THROWS(testtree.left(11))
   .CHECK_OK(testtree.print())
    .CHECK_OK(testtree.remove(3))
-  .CHECK_EQUAL(testtree.size(),9)
+  .CHECK_EQUAL(testtree.size(),8)
   .CHECK_OK(testtree.insert(17))
   .CHECK_EQUAL(testtree.left(2), -32)
   .CHECK_EQUAL(testtree.parent(1), -32)
    .CHECK_EQUAL(testtree.contains(18), false)
   .CHECK_THROWS(testtree.remove(13))
-  .CHECK_THROWS(testtree.left(2))
+  .CHECK_THROWS(testtree.left(-32))
   .CHECK_THROWS(testtree.right(5))
   .CHECK_EQUAL(testtree.contains(-10), true)
   .CHECK_OK(testtree.print())
